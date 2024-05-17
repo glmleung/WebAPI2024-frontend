@@ -294,4 +294,58 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
 
       return useMutation(mutationOptions);
     }
+    /**
+ * Get all dogs for a charity
+ */
+export const getCharitiesIdDogs = (
+    id: number, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Dog[]>> => {
     
+    return axios.default.get(
+      `/charities/${id}/dogs`,options
+    );
+  }
+
+
+export const getGetCharitiesIdDogsQueryKey = (id: number,) => {
+    return [`/charities/${id}/dogs`] as const;
+    }
+
+    
+export const getGetCharitiesIdDogsQueryOptions = <TData = Awaited<ReturnType<typeof getCharitiesIdDogs>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCharitiesIdDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCharitiesIdDogsQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCharitiesIdDogs>>> = ({ signal }) => getCharitiesIdDogs(id, { signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCharitiesIdDogs>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCharitiesIdDogsQueryResult = NonNullable<Awaited<ReturnType<typeof getCharitiesIdDogs>>>
+export type GetCharitiesIdDogsQueryError = AxiosError<unknown>
+
+export const useGetCharitiesIdDogs = <TData = Awaited<ReturnType<typeof getCharitiesIdDogs>>, TError = AxiosError<unknown>>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCharitiesIdDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetCharitiesIdDogsQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

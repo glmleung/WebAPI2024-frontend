@@ -15,6 +15,7 @@ import Register from "./components/Register";
 import { AuthProvider, useAuth } from "./components/AuthContext";
 import Login from "./components/Login";
 import Charities from "./components/Charities";
+import DogsManage from "./components/DogsManage";
 
 axios.defaults.baseURL = "http://localhost:10888";
 axios.interceptors.request.use((req) => {
@@ -59,6 +60,7 @@ const AppLayout = () => {
             { label: "Register", key: "/register", style:{display: user ? 'none' : 'block'}},
             { label: "Login", key: "/login" ,style:{display: user ? 'none' : 'block'}},
             { label: "Charities", key: "/charities" ,style:{display: user?.role === 'admin' ? 'block' : 'none'}},
+            { label: "Manage dogs", key: "/dogs/manage" ,style:{display: user?.role === 'worker' ? 'block' : 'none'}},
           ]}
           style={{ flex: 1, minWidth: 0 }}
         />
@@ -92,6 +94,7 @@ function App() {
           <Route path="register" Component={Register} />
           <Route path="login" Component={Login} />
           <Route path="charities" Component={Charities} />
+          <Route path="dogs/manage" Component={DogsManage} />
         </Route>
       </Routes>
     </Router></AuthProvider>

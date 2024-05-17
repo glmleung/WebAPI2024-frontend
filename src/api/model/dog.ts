@@ -11,6 +11,7 @@
 export interface Dog {
   age: number;
   breed: string;
+  charityId: number;
   id: number;
   name: string;
 }
