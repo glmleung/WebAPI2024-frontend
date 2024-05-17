@@ -191,29 +191,29 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
     /**
  * Delete a charity
  */
-export const deleteCharities = (
-     options?: AxiosRequestConfig
+export const deleteCharitiesId = (
+    id: number, options?: AxiosRequestConfig
  ): Promise<AxiosResponse<void>> => {
     
     return axios.default.delete(
-      `/charities`,options
+      `/charities/${id}`,options
     );
   }
 
 
 
-export const getDeleteCharitiesMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharities>>, TError,void, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteCharities>>, TError,void, TContext> => {
+export const getDeleteCharitiesIdMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharitiesId>>, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteCharitiesId>>, TError,{id: number}, TContext> => {
 const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCharities>>, void> = () => {
-          
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCharitiesId>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-          return  deleteCharities(axiosOptions)
+          return  deleteCharitiesId(id,axiosOptions)
         }
 
         
@@ -221,20 +221,20 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteCharitiesMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCharities>>>
+    export type DeleteCharitiesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCharitiesId>>>
     
-    export type DeleteCharitiesMutationError = AxiosError<unknown>
+    export type DeleteCharitiesIdMutationError = AxiosError<unknown>
 
-    export const useDeleteCharities = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharities>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteCharitiesId = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharitiesId>>, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
 ): UseMutationResult<
-        Awaited<ReturnType<typeof deleteCharities>>,
+        Awaited<ReturnType<typeof deleteCharitiesId>>,
         TError,
-        void,
+        {id: number},
         TContext
       > => {
 
-      const mutationOptions = getDeleteCharitiesMutationOptions(options);
+      const mutationOptions = getDeleteCharitiesIdMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
