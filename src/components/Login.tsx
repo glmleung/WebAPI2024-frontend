@@ -1,12 +1,12 @@
 import { Button, Form, FormProps, Input, Typography } from "antd";
-import { usePostAuthRegister } from "../api/auth/auth";
+import { usePostAuthLogin } from "../api/auth/auth";
 import { PostAuthRegisterBody } from "../api/model";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 type FieldType = PostAuthRegisterBody;
-const Register = () => {
-  const { mutateAsync } = usePostAuthRegister();
+const Login = () => {
+  const { mutateAsync } = usePostAuthLogin();
   const {token,setToken} = useAuth()
   const navigate = useNavigate()
 
@@ -35,7 +35,7 @@ const Register = () => {
 
   return (
     <div>
-      <Typography.Title>Sign Up</Typography.Title>
+      <Typography.Title>Login</Typography.Title>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -61,13 +61,11 @@ const Register = () => {
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item<FieldType> label="Charity Code" name="charityCode">
-          <Input />
-        </Form.Item>
+      
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Register
+            Login
           </Button>
         </Form.Item>
       </Form>
@@ -75,4 +73,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

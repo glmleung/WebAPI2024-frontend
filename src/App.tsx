@@ -7,6 +7,14 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+
+import "./App.css";
+import Home from "./components/Home";
+import { Button, Layout, Menu, Typography } from "antd";
+import Register from "./components/Register";
+import { AuthProvider, useAuth } from "./components/AuthContext";
+import Login from "./components/Login";
+
 axios.defaults.baseURL = "http://localhost:10888";
 axios.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
@@ -28,18 +36,16 @@ axios.interceptors.response.use(
     throw err;
   }
 );
-import "./App.css";
-import Home from "./components/Home";
-import { Button, Layout, Menu } from "antd";
-import Register from "./components/Register";
+
 const { Header, Footer, Content } = Layout;
 
 const AppLayout = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const {logout, user} = useAuth()
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Header style={{display:'flex', alignItems:"center"}}>
+      <Header style={{display:'flex', alignItems:"center", gap:16}}>
         <Menu
           theme="dark"
           mode="horizontal"
@@ -50,14 +56,13 @@ const AppLayout = () => {
           items={[
             { label: "Home", key: "/" },
             { label: "Register", key: "/register" },
+            { label: "Login", key: "/login" },
           ]}
           style={{ flex: 1, minWidth: 0 }}
         />
+        {user && <Typography.Text style={{color:'white'}}>{user.role} - {user.username}</Typography.Text>}
         <Button
-          onClick={() => {
-            localStorage.removeItem("token");
-            window.location.href = "/";
-          }}
+          onClick={logout}
         >
           Logout
         </Button>
@@ -78,14 +83,16 @@ const AppLayout = () => {
 
 function App() {
   return (
+    <AuthProvider>
     <Router>
       <Routes>
         <Route path="*" Component={AppLayout}>
           <Route index Component={Home} />
           <Route path="register" Component={Register} />
+          <Route path="login" Component={Login} />
         </Route>
       </Routes>
-    </Router>
+    </Router></AuthProvider>
   );
 }
 
