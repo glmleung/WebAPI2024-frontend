@@ -8,26 +8,29 @@ import {
   useNavigate,
 } from "react-router-dom";
 axios.defaults.baseURL = "http://localhost:10888";
-axios.interceptors.request.use(req => {
+axios.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
   if (token) {
     req.headers["Authorization"] = `Bearer ${token}`;
   }
-  return req
-})
-axios.interceptors.response.use(res => {
-  return res
-}, err => {
-  if(err instanceof AxiosError) {
-    if (err.response?.data) {
-      throw new Error(err.response.data)
+  return req;
+});
+axios.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  (err) => {
+    if (err instanceof AxiosError) {
+      if (err.response?.data) {
+        throw new Error(err.response.data);
+      }
     }
+    throw err;
   }
-  throw err
-})
+);
 import "./App.css";
 import Home from "./components/Home";
-import {  Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import Register from "./components/Register";
 const { Header, Footer, Content } = Layout;
 
@@ -35,8 +38,8 @@ const AppLayout = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (
-    <Layout style={{minHeight:'100vh'}}>
-      <Header>
+    <Layout style={{ minHeight: "100vh" }}>
+      <Header style={{display:'flex', alignItems:"center"}}>
         <Menu
           theme="dark"
           mode="horizontal"
@@ -50,17 +53,25 @@ const AppLayout = () => {
           ]}
           style={{ flex: 1, minWidth: 0 }}
         />
+        <Button
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.href = "/";
+          }}
+        >
+          Logout
+        </Button>
       </Header>
       <Content
         style={{
           textAlign: "center",
-          flex:1,
-          padding: 24
+          flex: 1,
+          padding: 24,
         }}
       >
         <Outlet></Outlet>
       </Content>
-      <Footer style={{backgroundColor:"#ddd"}}>Footer</Footer>
+      <Footer style={{ backgroundColor: "#ddd" }}>Footer</Footer>
     </Layout>
   );
 };
