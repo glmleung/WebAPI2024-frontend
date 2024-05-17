@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useGetAuthMe } from "../api/auth/auth";
 import { User } from "../api/model";
 
@@ -16,14 +22,16 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {},
 });
 
-export const AuthProvider = ({children}:{children: ReactNode}) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
 
-  const {data:meData, isLoading} = useGetAuthMe({query:{
-    enabled: !!token
-  }})
+  const { data: meData, isLoading } = useGetAuthMe({
+    query: {
+      enabled: !!token,
+    },
+  });
 
   useEffect(() => {
     if (token) {
@@ -38,10 +46,14 @@ export const AuthProvider = ({children}:{children: ReactNode}) => {
     window.location.href = "/";
   };
   return (
-    <AuthContext.Provider value={{ token, logout ,setToken, user: meData?.data,isLoading}}>{!isLoading && children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ token, logout, setToken, user: meData?.data, isLoading }}
+    >
+      {!isLoading && children}
+    </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
- return  useContext(AuthContext);
-}
+  return useContext(AuthContext);
+};

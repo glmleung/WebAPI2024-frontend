@@ -44,10 +44,10 @@ const { Header, Footer, Content } = Layout;
 const AppLayout = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const {logout, user} = useAuth()
+  const { logout, user } = useAuth();
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Header style={{display:'flex', alignItems:"center", gap:16}}>
+      <Header style={{ display: "flex", alignItems: "center", gap: 16 }}>
         <Menu
           theme="dark"
           mode="horizontal"
@@ -57,19 +57,35 @@ const AppLayout = () => {
           selectedKeys={[pathname]}
           items={[
             { label: "Home", key: "/" },
-            { label: "Register", key: "/register", style:{display: user ? 'none' : 'block'}},
-            { label: "Login", key: "/login" ,style:{display: user ? 'none' : 'block'}},
-            { label: "Charities", key: "/charities" ,style:{display: user?.role === 'admin' ? 'block' : 'none'}},
-            { label: "Manage dogs", key: "/dogs/manage" ,style:{display: user?.role === 'worker' ? 'block' : 'none'}},
+            {
+              label: "Register",
+              key: "/register",
+              style: { display: user ? "none" : "block" },
+            },
+            {
+              label: "Login",
+              key: "/login",
+              style: { display: user ? "none" : "block" },
+            },
+            {
+              label: "Charities",
+              key: "/charities",
+              style: { display: user?.role === "admin" ? "block" : "none" },
+            },
+            {
+              label: "Manage dogs",
+              key: "/dogs/manage",
+              style: { display: user?.role === "worker" ? "block" : "none" },
+            },
           ]}
           style={{ flex: 1, minWidth: 0 }}
         />
-        {user && <Typography.Text style={{color:'white'}}>{user.role} - {user.username}</Typography.Text>}
-        <Button
-          onClick={logout}
-        >
-          Logout
-        </Button>
+        {user && (
+          <Typography.Text style={{ color: "white" }}>
+            {user.role} - {user.username}
+          </Typography.Text>
+        )}
+        <Button onClick={logout}>Logout</Button>
       </Header>
       <Content
         style={{
@@ -87,17 +103,18 @@ const AppLayout = () => {
 function App() {
   return (
     <AuthProvider>
-    <Router>
-      <Routes>
-        <Route path="*" Component={AppLayout}>
-          <Route index Component={Home} />
-          <Route path="register" Component={Register} />
-          <Route path="login" Component={Login} />
-          <Route path="charities" Component={Charities} />
-          <Route path="dogs/manage" Component={DogsManage} />
-        </Route>
-      </Routes>
-    </Router></AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="*" Component={AppLayout}>
+            <Route index Component={Home} />
+            <Route path="register" Component={Register} />
+            <Route path="login" Component={Login} />
+            <Route path="charities" Component={Charities} />
+            <Route path="dogs/manage" Component={DogsManage} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

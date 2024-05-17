@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Button,Card,Flex,Form,Input,Tag,Typography } from "antd";
+import { Button, Card, Flex, Form, Input, Tag, Typography } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import {
@@ -11,21 +11,17 @@ import {
   useDeleteCharitiesIdCodesCode,
   usePutCharitiesId,
 } from "../api/charities/charities";
-import {
-  Charity,
-  PostCharitiesBody,
-  PutCharitiesIdBody,
-} from "../api/model";
+import { Charity, PostCharitiesBody, PutCharitiesIdBody } from "../api/model";
 import { useAuth } from "./AuthContext";
 
 const Charities = () => {
   const navigate = useNavigate();
-  const {user } =useAuth();
+  const { user } = useAuth();
 
-  const {data,refetch}= useGetCharities();
+  const { data, refetch } = useGetCharities();
   const charities = data?.data || [];
 
-  const {mutateAsync: addCharity} = usePostCharities();
+  const { mutateAsync: addCharity } = usePostCharities();
   useEffect(() => {
     if (user?.role !== "admin") {
       navigate("/");
@@ -66,19 +62,20 @@ type CodeInput = {
 const CharityItem = ({ charity }: { charity: Charity }) => {
   const [addCodeForm] = Form.useForm();
   const client = useQueryClient();
-  const {mutateAsync:deleteCharity} = useDeleteCharitiesId();
-  const {mutateAsync:updateCharity} = usePutCharitiesId();
-  const {mutateAsync:addCodeToCharity} = usePostCharitiesIdCodesCode();
+  const { mutateAsync: deleteCharity } = useDeleteCharitiesId();
+  const { mutateAsync: updateCharity } = usePutCharitiesId();
+  const { mutateAsync: addCodeToCharity } = usePostCharitiesIdCodesCode();
 
-  const {mutateAsync:deleteCodeFromCharity} =useDeleteCharitiesIdCodesCode();
+  const { mutateAsync: deleteCodeFromCharity } =
+    useDeleteCharitiesIdCodesCode();
   return (
     <Card
       title={
         <Flex justify="space-between" align="center">
           <Form<PutCharitiesIdBody>
             onFinish={async ({ name }) => {
-              await updateCharity({ id: charity.id,data: { name } });
-              client.invalidateQueries({ queryKey: getGetCharitiesQueryKey()} );
+              await updateCharity({ id: charity.id, data: { name } });
+              client.invalidateQueries({ queryKey: getGetCharitiesQueryKey() });
             }}
             initialValues={{ name: charity.name }}
           >
@@ -96,12 +93,12 @@ const CharityItem = ({ charity }: { charity: Charity }) => {
             </Flex>
           </Form>
           <Button
-            danger  type="primary"
+            danger
+            type="primary"
             htmlType="button"
             onClick={async () => {
               await deleteCharity({ id: charity.id });
-              client.invalidateQueries({queryKey: getGetCharitiesQueryKey(),
-              });
+              client.invalidateQueries({ queryKey: getGetCharitiesQueryKey() });
             }}
           >
             Delete
@@ -117,9 +114,10 @@ const CharityItem = ({ charity }: { charity: Charity }) => {
             closeIcon
             onClose={async (e) => {
               e.preventDefault();
-              await deleteCodeFromCharity({ id: charity.id,code });
+              await deleteCodeFromCharity({ id: charity.id, code });
               client.refetchQueries({ queryKey: getGetCharitiesQueryKey() });
-            }}>
+            }}
+          >
             {code}
           </Tag>
         ))}
@@ -129,19 +127,21 @@ const CharityItem = ({ charity }: { charity: Charity }) => {
         form={addCodeForm}
         onFinish={async ({ code }) => {
           try {
-            await addCodeToCharity({id:charity.id,code});
+            await addCodeToCharity({ id: charity.id, code });
             client.invalidateQueries({ queryKey: getGetCharitiesQueryKey() });
-            addCodeForm.resetFields()
+            addCodeForm.resetFields();
           } catch (e) {
             alert("Code already exists");
           }
-        }}>
+        }}
+      >
         <Flex align="center">
           <Form.Item<CodeInput>
             name="code"
             label="New Code"
             style={{ marginBottom: 0 }}
-            rules={[{ required: true,message: "Please input your code!" }]}>
+            rules={[{ required: true, message: "Please input your code!" }]}
+          >
             <Input size="small" />
           </Form.Item>
           <Form.Item<CodeInput> style={{ marginBottom: 0 }}>
