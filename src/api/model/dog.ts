@@ -15,5 +15,6 @@ export interface Dog {
   charity?: Charity;
   charityId: number;
   id: number;
+  liked?: boolean;
   name: string;
 }

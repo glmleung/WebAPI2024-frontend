@@ -295,6 +295,106 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
       return useMutation(mutationOptions);
     }
     /**
+ * Like a dog
+ */
+export const postDogsIdLike = (
+    id: number, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    
+    return axios.default.post(
+      `/dogs/${id}/like`,undefined,options
+    );
+  }
+
+
+
+export const getPostDogsIdLikeMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDogsIdLike>>, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof postDogsIdLike>>, TError,{id: number}, TContext> => {
+const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postDogsIdLike>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  postDogsIdLike(id,axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostDogsIdLikeMutationResult = NonNullable<Awaited<ReturnType<typeof postDogsIdLike>>>
+    
+    export type PostDogsIdLikeMutationError = AxiosError<unknown>
+
+    export const usePostDogsIdLike = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDogsIdLike>>, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        Awaited<ReturnType<typeof postDogsIdLike>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+
+      const mutationOptions = getPostDogsIdLikeMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * Unlike a dog
+ */
+export const deleteDogsIdLike = (
+    id: number, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    
+    return axios.default.delete(
+      `/dogs/${id}/like`,options
+    );
+  }
+
+
+
+export const getDeleteDogsIdLikeMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDogsIdLike>>, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteDogsIdLike>>, TError,{id: number}, TContext> => {
+const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDogsIdLike>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteDogsIdLike(id,axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteDogsIdLikeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDogsIdLike>>>
+    
+    export type DeleteDogsIdLikeMutationError = AxiosError<unknown>
+
+    export const useDeleteDogsIdLike = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDogsIdLike>>, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteDogsIdLike>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteDogsIdLikeMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * Get all dogs for a charity
  */
 export const getCharitiesIdDogs = (
