@@ -4,6 +4,7 @@
  * dog
  * OpenAPI spec version: 1.0.0
  */
+import type { Charity } from './charity';
 
 /**
  * A dog object
@@ -11,6 +12,7 @@
 export interface Dog {
   age: number;
   breed: string;
+  charity?: Charity;
   charityId: number;
   id: number;
   name: string;

@@ -379,6 +379,8 @@ components:
           type: integer
         charityId:
           type: integer
+        charity:
+          $ref: "#/components/schemas/Charity"
       required:
         - id
         - name
