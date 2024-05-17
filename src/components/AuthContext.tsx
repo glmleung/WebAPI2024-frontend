@@ -7,6 +7,7 @@ export type AuthContextType = {
   setToken: (token: string) => void;
   logout: () => void;
   user?: User | undefined;
+  isLoading?: boolean;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -20,7 +21,7 @@ export const AuthProvider = ({children}:{children: ReactNode}) => {
     localStorage.getItem("token")
   );
 
-  const {data:meData} = useGetAuthMe({query:{
+  const {data:meData, isLoading} = useGetAuthMe({query:{
     enabled: !!token
   }})
 
@@ -37,7 +38,7 @@ export const AuthProvider = ({children}:{children: ReactNode}) => {
     window.location.href = "/";
   };
   return (
-    <AuthContext.Provider value={{ token, logout ,setToken, user: meData?.data}}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ token, logout ,setToken, user: meData?.data,isLoading}}>{!isLoading && children}</AuthContext.Provider>
   );
 };
 

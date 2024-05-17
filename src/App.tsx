@@ -71,7 +71,6 @@ const AppLayout = () => {
       </Header>
       <Content
         style={{
-          textAlign: "center",
           flex: 1,
           padding: 24,
         }}

@@ -26,7 +26,8 @@ import type {
 import type {
   Charity,
   PostCharitiesBody,
-  PutCharitiesBody
+  PostCharitiesIdCodesCode201,
+  PutCharitiesIdBody
 } from '.././model'
 
 
@@ -140,30 +141,31 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
     /**
  * Update a charity
  */
-export const putCharities = (
-    putCharitiesBody: PutCharitiesBody, options?: AxiosRequestConfig
+export const putCharitiesId = (
+    id: number,
+    putCharitiesIdBody: PutCharitiesIdBody, options?: AxiosRequestConfig
  ): Promise<AxiosResponse<Charity>> => {
     
     return axios.default.put(
-      `/charities`,
-      putCharitiesBody,options
+      `/charities/${id}`,
+      putCharitiesIdBody,options
     );
   }
 
 
 
-export const getPutCharitiesMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putCharities>>, TError,{data: PutCharitiesBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof putCharities>>, TError,{data: PutCharitiesBody}, TContext> => {
+export const getPutCharitiesIdMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putCharitiesId>>, TError,{id: number;data: PutCharitiesIdBody}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof putCharitiesId>>, TError,{id: number;data: PutCharitiesIdBody}, TContext> => {
 const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putCharities>>, {data: PutCharitiesBody}> = (props) => {
-          const {data} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putCharitiesId>>, {id: number;data: PutCharitiesIdBody}> = (props) => {
+          const {id,data} = props ?? {};
 
-          return  putCharities(data,axiosOptions)
+          return  putCharitiesId(id,data,axiosOptions)
         }
 
         
@@ -171,20 +173,20 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutCharitiesMutationResult = NonNullable<Awaited<ReturnType<typeof putCharities>>>
-    export type PutCharitiesMutationBody = PutCharitiesBody
-    export type PutCharitiesMutationError = AxiosError<unknown>
+    export type PutCharitiesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putCharitiesId>>>
+    export type PutCharitiesIdMutationBody = PutCharitiesIdBody
+    export type PutCharitiesIdMutationError = AxiosError<unknown>
 
-    export const usePutCharities = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putCharities>>, TError,{data: PutCharitiesBody}, TContext>, axios?: AxiosRequestConfig}
+    export const usePutCharitiesId = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putCharitiesId>>, TError,{id: number;data: PutCharitiesIdBody}, TContext>, axios?: AxiosRequestConfig}
 ): UseMutationResult<
-        Awaited<ReturnType<typeof putCharities>>,
+        Awaited<ReturnType<typeof putCharitiesId>>,
         TError,
-        {data: PutCharitiesBody},
+        {id: number;data: PutCharitiesIdBody},
         TContext
       > => {
 
-      const mutationOptions = getPutCharitiesMutationOptions(options);
+      const mutationOptions = getPutCharitiesIdMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -235,6 +237,108 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
       > => {
 
       const mutationOptions = getDeleteCharitiesIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * Add a code to a charity
+ */
+export const postCharitiesIdCodesCode = (
+    id: number,
+    code: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<PostCharitiesIdCodesCode201>> => {
+    
+    return axios.default.post(
+      `/charities/${id}/codes/${code}`,undefined,options
+    );
+  }
+
+
+
+export const getPostCharitiesIdCodesCodeMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postCharitiesIdCodesCode>>, TError,{id: number;code: string}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof postCharitiesIdCodesCode>>, TError,{id: number;code: string}, TContext> => {
+const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postCharitiesIdCodesCode>>, {id: number;code: string}> = (props) => {
+          const {id,code} = props ?? {};
+
+          return  postCharitiesIdCodesCode(id,code,axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostCharitiesIdCodesCodeMutationResult = NonNullable<Awaited<ReturnType<typeof postCharitiesIdCodesCode>>>
+    
+    export type PostCharitiesIdCodesCodeMutationError = AxiosError<unknown>
+
+    export const usePostCharitiesIdCodesCode = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postCharitiesIdCodesCode>>, TError,{id: number;code: string}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        Awaited<ReturnType<typeof postCharitiesIdCodesCode>>,
+        TError,
+        {id: number;code: string},
+        TContext
+      > => {
+
+      const mutationOptions = getPostCharitiesIdCodesCodeMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * Delete a code from a charity
+ */
+export const deleteCharitiesIdCodesCode = (
+    id: number,
+    code: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    
+    return axios.default.delete(
+      `/charities/${id}/codes/${code}`,options
+    );
+  }
+
+
+
+export const getDeleteCharitiesIdCodesCodeMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharitiesIdCodesCode>>, TError,{id: number;code: string}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteCharitiesIdCodesCode>>, TError,{id: number;code: string}, TContext> => {
+const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCharitiesIdCodesCode>>, {id: number;code: string}> = (props) => {
+          const {id,code} = props ?? {};
+
+          return  deleteCharitiesIdCodesCode(id,code,axiosOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteCharitiesIdCodesCodeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCharitiesIdCodesCode>>>
+    
+    export type DeleteCharitiesIdCodesCodeMutationError = AxiosError<unknown>
+
+    export const useDeleteCharitiesIdCodesCode = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharitiesIdCodesCode>>, TError,{id: number;code: string}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteCharitiesIdCodesCode>>,
+        TError,
+        {id: number;code: string},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteCharitiesIdCodesCodeMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

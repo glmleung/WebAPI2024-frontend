@@ -13,6 +13,7 @@ export * from './postAuthLoginBody';
 export * from './postAuthRegister201';
 export * from './postAuthRegisterBody';
 export * from './postCharitiesBody';
-export * from './putCharitiesBody';
+export * from './postCharitiesIdCodesCode201';
+export * from './putCharitiesIdBody';
 export * from './updateDogBody';
 export * from './user';
