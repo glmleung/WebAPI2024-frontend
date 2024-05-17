@@ -6,5 +6,5 @@
  */
 
 export type PostAuthLogin200 = {
-  token?: string;
+  token: string;
 };

@@ -6,5 +6,5 @@
  */
 
 export type PostAuthRegister201 = {
-  token?: string;
+  token: string;
 };
