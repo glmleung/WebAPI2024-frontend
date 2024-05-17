@@ -1,22 +1,8 @@
-import { Button , Card, Flex, Grid} from "antd";
+import axios from "axios";
+axios.defaults.baseURL =  "http://localhost:10888";
 import "./App.css";
-import { useQuery } from "@tanstack/react-query";
-import { getDogs } from "./api/dogs";
-
 function App() {
-  const {data: dogs} = useQuery({ queryKey: ["dogs"], queryFn: getDogs });
-  
-  return <div>
-    <h1>Dogs</h1>
-    <Flex gap={12} vertical>
-      {dogs?.map((dog) => (
-        <Card key={dog.id} title={dog.name}>
-          <p>Breed: {dog.breed}</p>
-          <p>Age: {dog.age}</p>
-        </Card>
-      ))}
-    </Flex>
-  </div>;
+  return <div></div>
 }
 
 export default App;
