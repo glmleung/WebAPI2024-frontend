@@ -7,21 +7,20 @@ import { useEffect } from "react";
 type FieldType = PostAuthRegisterBody;
 const Login = () => {
   const { mutateAsync } = usePostAuthLogin();
-  const {token,setToken} = useAuth()
-  const navigate = useNavigate()
+  const { token, setToken } = useAuth();
+  const navigate = useNavigate();
 
   // Do not allow to access register page if user is already logged in
   useEffect(() => {
-    if(token) {
-      navigate('/')
+    if (token) {
+      navigate("/");
     }
-  })
+  });
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
       const result = await mutateAsync({ data: values });
       const token = result.data.token;
       setToken(token);
-   
     } catch (e) {
       alert(e);
     }
@@ -61,7 +60,6 @@ const Login = () => {
         >
           <Input.Password />
         </Form.Item>
-      
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
