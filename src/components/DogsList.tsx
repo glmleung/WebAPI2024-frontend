@@ -1,6 +1,6 @@
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Card, Descriptions, Flex, Typography } from "antd";
+import { Button, Typography } from "antd";
 import {
   getGetDogsQueryKey,
   useDeleteDogsIdLike,
@@ -12,35 +12,27 @@ import { useAuth } from "./AuthContext";
 
 const DogsList = () => {
   const { data } = useGetDogs();
-  const dogs = data?.data;
+  const dogs = data?.data ?? [];
 
   return (
     <div>
       <Typography.Title>Dogs List</Typography.Title>
-      <Flex vertical gap={12}>
+      <div className="dog-list">
         {dogs?.map((dog) => (
-          <Card
-            key={dog.id}
-            title={
-              <Flex gap={16} align="center" justify="space-between">
-                <span>
-                  {dog.name} (ID: {dog.id})
-                </span>
-                <LikeButton dog={dog} />
-              </Flex>
-            }
-          >
-            <Descriptions>
-              <Descriptions.Item label="Name">{dog.name}</Descriptions.Item>
-              <Descriptions.Item label="Age">{dog.age}</Descriptions.Item>
-              <Descriptions.Item label="Breed">{dog.breed}</Descriptions.Item>
-              <Descriptions.Item label="Charity">
-                {dog.charity?.name}
-              </Descriptions.Item>
-            </Descriptions>
-          </Card>
+          <div className="dog-card" key={dog.id}>
+            <div className="dog-image">
+              <img src={dog.image} />
+            </div>
+            <div className="dog-content">
+              <div className="dog-name">
+                {dog.name} <LikeButton dog={dog} />
+              </div>
+              <div className="dog-breed">Breed: {dog.breed}</div>
+              <div className="dog-age">Age: {dog.age}</div>
+            </div>
+          </div>
         ))}
-      </Flex>
+      </div>
     </div>
   );
 };

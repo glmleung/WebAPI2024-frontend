@@ -1,0 +1,40 @@
+.dog-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap:20px;
+}
+
+.dog-card {
+  flex:0 0 200px;
+
+  height: 100%;
+  border: 1px solid #aaa;
+  overflow: hidden;
+  background-color: white;
+  border-radius: 16px;
+}
+
+.dog-image {
+  height: 200px;
+  width: 100%;
+}
+.dog-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.dog-content {
+  padding: 10px;
+  text-align: center;
+}
+.dog-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 6px;;
+}
+
+.dog-breed {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
