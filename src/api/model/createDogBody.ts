@@ -8,5 +8,6 @@
 export interface CreateDogBody {
   age: number;
   breed: string;
+  image: string;
   name: string;
 }

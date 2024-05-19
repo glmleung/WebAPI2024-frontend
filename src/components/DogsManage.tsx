@@ -5,8 +5,10 @@ import {
   Descriptions,
   Flex,
   Form,
+  Image,
   Input,
   Typography,
+  Upload,
 } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -19,6 +21,7 @@ import {
 } from "../api/dogs/dogs";
 import { CreateDogBody, Dog, UpdateDogBody } from "../api/model";
 import { useAuth } from "./AuthContext";
+import { flushSync } from "react-dom";
 
 const DogsManage = () => {
   const { user } = useAuth();
@@ -36,6 +39,7 @@ const DogsManage = () => {
       navigate("/");
     }
   });
+  // console.log(addDogForm.getFieldsValue())
   return (
     <Flex vertical gap={12}>
       <Typography.Title>Manage dogs</Typography.Title>
@@ -44,6 +48,7 @@ const DogsManage = () => {
         <Form<CreateDogBody>
           form={addDogForm}
           onFinish={async (values) => {
+         
             await addDog({ data: values });
             addDogForm.resetFields();
             refetch();
@@ -70,6 +75,13 @@ const DogsManage = () => {
           >
             <Input type="number" />
           </Form.Item>
+          <Form.Item<CreateDogBody>
+            name="image"
+            label="Image"
+            rules={[{ required: true, message: "required" }]}
+          >
+            <UploadItem />
+          </Form.Item>
           <Button type="primary" htmlType="submit">
             Add
           </Button>
@@ -78,6 +90,26 @@ const DogsManage = () => {
       {dogs.map((dog) => (
         <DogItem dog={dog} key={dog.id} />
       ))}
+    </Flex>
+  );
+};
+
+const UploadItem = ({ value, onChange }: any) => {
+  return (
+    <Flex>
+      <input
+        type="file"
+        max={1}
+        accept="image/*"
+        onChange={(e) => {
+          const file = e.target.files?.[0] as Blob;
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.addEventListener("loadend", (ev) => {
+            onChange(ev.target?.result);
+          });
+        }}
+      />{value && <Image src={value} height={100} width={100} style={{objectFit:'contain'}} />}
     </Flex>
   );
 };
@@ -116,11 +148,13 @@ const DogItem = ({ dog }: { dog: Dog }) => {
         }
         key={dog.id}
       >
-        <Descriptions>
+        <Flex gap={16}>
+        <Image src={dog.image} height={200} width={200} style={{objectFit:'contain'}}/>
+        <Descriptions style={{flex:1}}>
           <Descriptions.Item label="Name">{dog.name}</Descriptions.Item>
           <Descriptions.Item label="Age">{dog.age}</Descriptions.Item>
           <Descriptions.Item label="Breed">{dog.breed}</Descriptions.Item>
-        </Descriptions>
+        </Descriptions></Flex>
       </Card>
     );
   }
@@ -180,6 +214,13 @@ const DogItem = ({ dog }: { dog: Dog }) => {
         >
           <Input type="number" />
         </Form.Item>
+        <Form.Item<CreateDogBody>
+            name="image"
+            label="Image"
+            rules={[{ required: true, message: "required" }]}
+          >
+            <UploadItem />
+          </Form.Item>
       </Card>
     </Form>
   );
