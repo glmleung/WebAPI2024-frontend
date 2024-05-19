@@ -8,7 +8,6 @@ import {
   Image,
   Input,
   Typography,
-  Upload,
 } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -21,7 +20,6 @@ import {
 } from "../api/dogs/dogs";
 import { CreateDogBody, Dog, UpdateDogBody } from "../api/model";
 import { useAuth } from "./AuthContext";
-import { flushSync } from "react-dom";
 
 const DogsManage = () => {
   const { user } = useAuth();
@@ -48,7 +46,6 @@ const DogsManage = () => {
         <Form<CreateDogBody>
           form={addDogForm}
           onFinish={async (values) => {
-         
             await addDog({ data: values });
             addDogForm.resetFields();
             refetch();
@@ -94,7 +91,13 @@ const DogsManage = () => {
   );
 };
 
-const UploadItem = ({ value, onChange }: any) => {
+const UploadItem = ({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange?: (v: string) => void;
+}) => {
   return (
     <Flex>
       <input
@@ -106,10 +109,18 @@ const UploadItem = ({ value, onChange }: any) => {
           const reader = new FileReader();
           reader.readAsDataURL(file);
           reader.addEventListener("loadend", (ev) => {
-            onChange(ev.target?.result);
+            if (ev.target?.result) onChange?.(ev.target?.result.toString());
           });
         }}
-      />{value && <Image src={value} height={100} width={100} style={{objectFit:'contain'}} />}
+      />
+      {value && (
+        <Image
+          src={value}
+          height={100}
+          width={100}
+          style={{ objectFit: "contain" }}
+        />
+      )}
     </Flex>
   );
 };
@@ -149,12 +160,18 @@ const DogItem = ({ dog }: { dog: Dog }) => {
         key={dog.id}
       >
         <Flex gap={16}>
-        <Image src={dog.image} height={200} width={200} style={{objectFit:'contain'}}/>
-        <Descriptions style={{flex:1}}>
-          <Descriptions.Item label="Name">{dog.name}</Descriptions.Item>
-          <Descriptions.Item label="Age">{dog.age}</Descriptions.Item>
-          <Descriptions.Item label="Breed">{dog.breed}</Descriptions.Item>
-        </Descriptions></Flex>
+          <Image
+            src={dog.image}
+            height={200}
+            width={200}
+            style={{ objectFit: "contain" }}
+          />
+          <Descriptions style={{ flex: 1 }}>
+            <Descriptions.Item label="Name">{dog.name}</Descriptions.Item>
+            <Descriptions.Item label="Age">{dog.age}</Descriptions.Item>
+            <Descriptions.Item label="Breed">{dog.breed}</Descriptions.Item>
+          </Descriptions>
+        </Flex>
       </Card>
     );
   }
@@ -215,12 +232,12 @@ const DogItem = ({ dog }: { dog: Dog }) => {
           <Input type="number" />
         </Form.Item>
         <Form.Item<CreateDogBody>
-            name="image"
-            label="Image"
-            rules={[{ required: true, message: "required" }]}
-          >
-            <UploadItem />
-          </Form.Item>
+          name="image"
+          label="Image"
+          rules={[{ required: true, message: "required" }]}
+        >
+          <UploadItem />
+        </Form.Item>
       </Card>
     </Form>
   );
