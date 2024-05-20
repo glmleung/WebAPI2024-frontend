@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Card,
@@ -7,6 +7,7 @@ import {
   Form,
   Image,
   Input,
+  Select,
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
@@ -20,6 +21,37 @@ import {
 } from "../api/dogs/dogs";
 import { CreateDogBody, Dog, UpdateDogBody } from "../api/model";
 import { useAuth } from "./AuthContext";
+
+
+const useBreeds = () => {
+   return useQuery({
+    queryKey: ["breeds"],
+    queryFn: async () => {
+      const response = await fetch("https://dog.ceo/api/breeds/list/all");
+      const data = await response.json();
+      const breedsObj = data.message;
+      const breeds = [];
+      const mainBreeds = Object.keys(breedsObj);
+
+      function cap(s: string) {
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      }
+
+      for (let i = 0; i < mainBreeds.length; i++) {
+        const breedName = mainBreeds[i];
+        if (breedsObj[breedName].length === 0) {
+          breeds.push(cap(breedName));
+        } else {
+          for (let j = 0; j < breedsObj[breedName].length; j++) {
+            breeds.push(cap(breedsObj[breedName][j]) + " " + cap(breedName));
+          }
+        }
+      }
+      return breeds;
+    },
+  });
+
+}
 
 const DogsManage = () => {
   const { user } = useAuth();
@@ -37,7 +69,9 @@ const DogsManage = () => {
       navigate("/");
     }
   });
-  // console.log(addDogForm.getFieldsValue())
+
+  const { data: breeds } = useBreeds()
+
   return (
     <Flex vertical gap={12}>
       <Typography.Title>Manage dogs</Typography.Title>
@@ -63,7 +97,14 @@ const DogsManage = () => {
             label="Breed"
             rules={[{ required: true, message: "required" }]}
           >
-            <Input />
+            <Select
+              options={
+                breeds?.map((b) => ({
+                  label: b,
+                  value: b,
+                }))
+              }
+            />
           </Form.Item>
           <Form.Item<CreateDogBody>
             name="age"
@@ -130,6 +171,7 @@ const DogItem = ({ dog }: { dog: Dog }) => {
   const [updateDogForm] = Form.useForm();
   const { mutateAsync: updateDog } = usePutDogsId();
   const { mutateAsync: deleteDog } = useDeleteDogsId();
+  const { data: breeds } = useBreeds()
 
   const [editing, setEditing] = useState(false);
   if (!editing) {
@@ -222,7 +264,14 @@ const DogItem = ({ dog }: { dog: Dog }) => {
           label="Breed"
           rules={[{ required: true, message: "required" }]}
         >
-          <Input />
+          <Select
+              options={
+                breeds?.map((b) => ({
+                  label: b,
+                  value: b,
+                }))
+              }
+            />
         </Form.Item>
         <Form.Item<UpdateDogBody>
           name="age"
