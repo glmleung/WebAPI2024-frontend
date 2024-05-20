@@ -1,6 +1,6 @@
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Typography } from "antd";
+import { Button, Flex, Form, Input, InputNumber, Select, Typography } from "antd";
 import {
   getGetDogsQueryKey,
   useDeleteDogsIdLike,
@@ -9,13 +9,45 @@ import {
 } from "../api/dogs/dogs";
 import { Dog } from "../api/model";
 import { useAuth } from "./AuthContext";
+import { useBreeds } from "./useBreeds";
+import { useState } from "react";
 
 const DogsList = () => {
-  const { data } = useGetDogs();
+  const [search, setSearch] = useState({});
+  const { data,  } = useGetDogs(search);
+  const {data:breeds}=useBreeds()
   const dogs = data?.data ?? [];
 
   return (
     <div>
+      <Form 
+      onFinish={(values) => {
+        setSearch(values)
+      }}
+      >
+      <Flex gap={12} wrap>
+        <Form.Item label="Breed" name="breed" style={{width:200}}>
+          <Select placeholder="Select breed" allowClear>
+        
+            {breeds?.map((breed) => (
+              <Select.Option key={breed} value={breed}>
+                {breed}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item label="Name" name="name">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Age from" name="ageFrom">
+          <InputNumber />
+        </Form.Item>
+        <Form.Item label="Age to" name="ageTo">
+          <InputNumber />
+        </Form.Item>
+        <Button htmlType="submit" type="primary">Search</Button>
+      </Flex>
+      </Form>
       <Typography.Title>Dogs List</Typography.Title>
       <div className="dog-list">
         {dogs?.map((dog) => (

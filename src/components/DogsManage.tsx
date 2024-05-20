@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {  useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Card,
@@ -21,37 +21,10 @@ import {
 } from "../api/dogs/dogs";
 import { CreateDogBody, Dog, UpdateDogBody } from "../api/model";
 import { useAuth } from "./AuthContext";
+import { useBreeds } from "./useBreeds";
 
 
-const useBreeds = () => {
-   return useQuery({
-    queryKey: ["breeds"],
-    queryFn: async () => {
-      const response = await fetch("https://dog.ceo/api/breeds/list/all");
-      const data = await response.json();
-      const breedsObj = data.message;
-      const breeds = [];
-      const mainBreeds = Object.keys(breedsObj);
 
-      function cap(s: string) {
-        return s.charAt(0).toUpperCase() + s.slice(1);
-      }
-
-      for (let i = 0; i < mainBreeds.length; i++) {
-        const breedName = mainBreeds[i];
-        if (breedsObj[breedName].length === 0) {
-          breeds.push(cap(breedName));
-        } else {
-          for (let j = 0; j < breedsObj[breedName].length; j++) {
-            breeds.push(cap(breedsObj[breedName][j]) + " " + cap(breedName));
-          }
-        }
-      }
-      return breeds;
-    },
-  });
-
-}
 
 const DogsManage = () => {
   const { user } = useAuth();
@@ -97,14 +70,13 @@ const DogsManage = () => {
             label="Breed"
             rules={[{ required: true, message: "required" }]}
           >
-            <Select
-              options={
-                breeds?.map((b) => ({
-                  label: b,
-                  value: b,
-                }))
-              }
-            />
+            <Select>
+              {breeds?.map((breed) => (
+                <Select.Option key={breed} value={breed}>
+                  {breed}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item<CreateDogBody>
             name="age"
@@ -264,14 +236,13 @@ const DogItem = ({ dog }: { dog: Dog }) => {
           label="Breed"
           rules={[{ required: true, message: "required" }]}
         >
-          <Select
-              options={
-                breeds?.map((b) => ({
-                  label: b,
-                  value: b,
-                }))
-              }
-            />
+            <Select>
+              {breeds?.map((breed) => (
+                <Select.Option key={breed} value={breed}>
+                  {breed}
+                </Select.Option>
+              ))}
+            </Select>
         </Form.Item>
         <Form.Item<UpdateDogBody>
           name="age"

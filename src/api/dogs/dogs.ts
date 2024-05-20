@@ -26,6 +26,7 @@ import type {
 import type {
   CreateDogBody,
   Dog,
+  GetDogsParams,
   UpdateDogBody
 } from '.././model'
 
@@ -35,30 +36,32 @@ import type {
  * Get all dogs
  */
 export const getDogs = (
-     options?: AxiosRequestConfig
+    params?: GetDogsParams, options?: AxiosRequestConfig
  ): Promise<AxiosResponse<Dog[]>> => {
     
     return axios.default.get(
-      `/dogs`,options
+      `/dogs`,{
+    ...options,
+        params: {...params, ...options?.params},}
     );
   }
 
 
-export const getGetDogsQueryKey = () => {
-    return [`/dogs`] as const;
+export const getGetDogsQueryKey = (params?: GetDogsParams,) => {
+    return [`/dogs`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getGetDogsQueryOptions = <TData = Awaited<ReturnType<typeof getDogs>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetDogsQueryOptions = <TData = Awaited<ReturnType<typeof getDogs>>, TError = AxiosError<unknown>>(params?: GetDogsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
 
 const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDogsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetDogsQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDogs>>> = ({ signal }) => getDogs({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDogs>>> = ({ signal }) => getDogs(params, { signal, ...axiosOptions });
 
       
 
@@ -71,11 +74,11 @@ export type GetDogsQueryResult = NonNullable<Awaited<ReturnType<typeof getDogs>>
 export type GetDogsQueryError = AxiosError<unknown>
 
 export const useGetDogs = <TData = Awaited<ReturnType<typeof getDogs>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
+ params?: GetDogsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetDogsQueryOptions(options)
+  const queryOptions = getGetDogsQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
