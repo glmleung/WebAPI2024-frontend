@@ -1,4 +1,4 @@
-import {  useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Card,
@@ -23,9 +23,6 @@ import { CreateDogBody, Dog, UpdateDogBody } from "../api/model";
 import { useAuth } from "./AuthContext";
 import { useBreeds } from "./useBreeds";
 
-
-
-
 const DogsManage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -43,7 +40,7 @@ const DogsManage = () => {
     }
   });
 
-  const { data: breeds } = useBreeds()
+  const { data: breeds } = useBreeds();
 
   return (
     <Flex vertical gap={12}>
@@ -143,7 +140,7 @@ const DogItem = ({ dog }: { dog: Dog }) => {
   const [updateDogForm] = Form.useForm();
   const { mutateAsync: updateDog } = usePutDogsId();
   const { mutateAsync: deleteDog } = useDeleteDogsId();
-  const { data: breeds } = useBreeds()
+  const { data: breeds } = useBreeds();
 
   const [editing, setEditing] = useState(false);
   if (!editing) {
@@ -236,13 +233,13 @@ const DogItem = ({ dog }: { dog: Dog }) => {
           label="Breed"
           rules={[{ required: true, message: "required" }]}
         >
-            <Select>
-              {breeds?.map((breed) => (
-                <Select.Option key={breed} value={breed}>
-                  {breed}
-                </Select.Option>
-              ))}
-            </Select>
+          <Select>
+            {breeds?.map((breed) => (
+              <Select.Option key={breed} value={breed}>
+                {breed}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item<UpdateDogBody>
           name="age"

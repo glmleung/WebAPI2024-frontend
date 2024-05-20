@@ -44,7 +44,7 @@ axios.interceptors.response.use(
   }
 );
 
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
 const AppLayout = () => {
   const { pathname } = useLocation();
@@ -63,6 +63,10 @@ const AppLayout = () => {
           items={[
             { label: "Home", key: "/" },
             {
+              label: "Dogs",
+              key: "/dogs/list",
+            },
+            {
               label: "Register",
               key: "/register",
               style: { display: user ? "none" : "block" },
@@ -77,10 +81,7 @@ const AppLayout = () => {
               key: "/charities",
               style: { display: user?.role === "admin" ? "block" : "none" },
             },
-            {
-              label: "Dogs",
-              key: "/dogs/list",
-            },
+
             {
               label: "Manage dogs",
               key: "/dogs/manage",
@@ -94,7 +95,7 @@ const AppLayout = () => {
             {user.role} - {user.username}
           </Typography.Text>
         )}
-        <Button onClick={logout}>Logout</Button>
+        {user && <Button onClick={logout}>Logout</Button>}
       </Header>
       <Content
         style={{
@@ -104,7 +105,6 @@ const AppLayout = () => {
       >
         <Outlet></Outlet>
       </Content>
-      <Footer style={{ backgroundColor: "#ddd" }}>Footer</Footer>
     </Layout>
   );
 };
