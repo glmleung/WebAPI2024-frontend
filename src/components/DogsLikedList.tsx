@@ -20,7 +20,7 @@ const DogsLikedList = () => {
 
   return (
     <div>
-      <Typography.Title>Dogs List</Typography.Title>
+      <Typography.Title>My favourite</Typography.Title>
       <div className="dog-list">
         {dogs?.map((dog) => (
           <div className="dog-card" key={dog.id}>
