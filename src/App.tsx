@@ -17,6 +17,7 @@ import Login from "./components/Login";
 import Charities from "./components/Charities";
 import DogsManage from "./components/DogsManage";
 import DogsList from "./components/DogsList";
+import DogsLikedList from "./components/DogsLikedList";
 
 axios.defaults.baseURL = "http://localhost:10888";
 axios.interceptors.request.use((req) => {
@@ -87,6 +88,11 @@ const AppLayout = () => {
               key: "/dogs/manage",
               style: { display: user?.role === "worker" ? "block" : "none" },
             },
+            {
+              label: "Liked dogs",
+              key: "/dogs/liked",
+              style: { display: user ? "block" : "none" },
+            },
           ]}
           style={{ flex: 1, minWidth: 0 }}
         />
@@ -121,6 +127,7 @@ function App() {
             <Route path="charities" Component={Charities} />
             <Route path="dogs/manage" Component={DogsManage} />
             <Route path="dogs/list" Component={DogsList} />
+            <Route path="dogs/liked" Component={DogsLikedList} />
           </Route>
         </Routes>
       </Router>

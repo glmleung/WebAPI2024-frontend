@@ -398,6 +398,61 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
       return useMutation(mutationOptions);
     }
     /**
+ * Get all liked dogs
+ */
+export const getUsersLikedDogs = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Dog[]>> => {
+    
+    return axios.default.get(
+      `/users/likedDogs`,options
+    );
+  }
+
+
+export const getGetUsersLikedDogsQueryKey = () => {
+    return [`/users/likedDogs`] as const;
+    }
+
+    
+export const getGetUsersLikedDogsQueryOptions = <TData = Awaited<ReturnType<typeof getUsersLikedDogs>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersLikedDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetUsersLikedDogsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersLikedDogs>>> = ({ signal }) => getUsersLikedDogs({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsersLikedDogs>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetUsersLikedDogsQueryResult = NonNullable<Awaited<ReturnType<typeof getUsersLikedDogs>>>
+export type GetUsersLikedDogsQueryError = AxiosError<unknown>
+
+export const useGetUsersLikedDogs = <TData = Awaited<ReturnType<typeof getUsersLikedDogs>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersLikedDogs>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetUsersLikedDogsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
  * Get all dogs for a charity
  */
 export const getCharitiesIdDogs = (
